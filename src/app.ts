@@ -1,6 +1,8 @@
 import express, { Request, Response } from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
+import { blogController } from './app/module/Blog Model/blog.Controller';
+import blogRouter from './app/module/Blog Model/blog.Router';
 const app = express();
 
 
@@ -8,6 +10,12 @@ const app = express();
 app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
+
+
+// api end points 
+app.use('/api/blogs', blogRouter)
+
+
 
 app.get('/', (req: Request, res: Response) => {
     res.send({
