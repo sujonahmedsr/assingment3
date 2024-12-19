@@ -12,8 +12,10 @@ const blogSchemaModel = new Schema<blogInterface>({
         required: [true, 'Content field is required.']
     },
     author: {
-        type: Schema.Types.ObjectId,
-        required: [true, 'Author field is required.']
+        type: String,
+        // type: Schema.Types.ObjectId,
+        required: [true, 'Author field is required.'],
+        // ref: 'User'
     },
     isPublished: {
         type: Boolean,

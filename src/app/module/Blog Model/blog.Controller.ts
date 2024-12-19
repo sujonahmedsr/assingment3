@@ -1,61 +1,64 @@
 import { Request, Response } from "express"
 import { blogServices } from "./blog.Services"
 import { StatusCodes } from "http-status-codes"
+import sendResponse from "../../utils/sendRespose"
+import asyncFunc from "../../utils/asyncFunc"
 
-const createBlog = async (req: Request, res: Response) => {
+// create a blog 
+const createBlog = asyncFunc(async (req: Request, res: Response) => {
     const body = req.body
     const result = await blogServices.createBlogIntoDb(body)
-    return {
-        success: true,
-        message: "Blog created successfully",
+    sendResponse(res, {
         statusCode: StatusCodes.CREATED,
+        message: 'Blog created successfully',
         data: result
-      }
-}
+    })
+})
 
-const getAllBlog = async (req: Request, res: Response) => {
+// get all blogs 
+const getAllBlog = asyncFunc(async (req: Request, res: Response) => {
     const result = await blogServices.getAllBlogDb()
-    return {
-        success: true,
-        message: "Blogs fetched successfully",
+    sendResponse(res, {
         statusCode: StatusCodes.OK,
+        message: 'Blogs fetched successfully',
         data: result
-      }
-}
+    })
+})
 
-const getSingleBlog = async (req: Request, res: Response) => {
-    const {id} = req.params
+// get single blogs 
+const getSingleBlog = asyncFunc(async (req: Request, res: Response) => {
+    const { id } = req.params
     const result = await blogServices.getSingleBlogDb(id)
-    return {
-        success: true,
-        message: "Single blog fetched successfully",
+    sendResponse(res, {
         statusCode: StatusCodes.OK,
+        message: 'Single blog fetched successfully',
         data: result
-      }
-}
-const updateSingleBlog = async (req: Request, res: Response) => {
-    const {id} = req.params
+    })
+})
+
+// update a blog 
+const updateSingleBlog = asyncFunc(async (req: Request, res: Response) => {
+    const { id } = req.params
     const payload = req.body
     const result = await blogServices.updateSingleBlogDb(id, payload)
-    return {
-        success: true,
-        message: "Blog updated successfully",
+    sendResponse(res, {
         statusCode: StatusCodes.OK,
+        message: 'Blog updated successfully',
         data: result
-      }
-}
-const deleteSingleBlog = async (req: Request, res: Response) => {
-    const {id} = req.params
-    const result = await blogServices.deleteSingleBlogDb(id)
-    return {
-        success: true,
-        message: "Blog deleted successfully",
+    })
+})
+
+// delete a blog  
+const deleteSingleBlog = asyncFunc(async (req: Request, res: Response) => {
+    const { id } = req.params
+    await blogServices.deleteSingleBlogDb(id)
+    sendResponse(res, {
         statusCode: StatusCodes.OK,
-        data: result
-      }
-}
+        message: 'Blog deleted successfully',
+    })
+})
 
-
+// export all function 
 export const blogController = {
     createBlog,
     getAllBlog,
