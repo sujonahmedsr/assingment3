@@ -29,7 +29,7 @@ const loginUserDb = async (paylod: loginInterface) => {
         email: user?.email,
         role: user?.role,
     }
-    const token = jwt.sign(jwtPayload, "secreate1254hajibi", { expiresIn: '1d' })
+    const token = jwt.sign(jwtPayload, process.env.SECRET_JWT as string, { expiresIn: '1d' })
 
 
     return { token };

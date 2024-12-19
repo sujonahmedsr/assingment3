@@ -9,7 +9,8 @@ const userSchema = new Schema<userInterface>({
     },
     email: {
         type: String,
-        required: [true, 'Email field is required.']
+        required: [true, 'Email field is required.'],
+        unique: true
     },
     password: {
         type: String,
@@ -33,6 +34,14 @@ userSchema.pre('save', async function(next){
     const user = this;
     user.password = await bcrypt.hash(user.password, 10)
     next()
+})
+
+userSchema.pre("save", async function(next){
+    const {email} = this
+    const user = await userModel.findOne({email})
+    if(user){
+        throw new Error('User already exists')
+    }
 })
 
 userSchema.post('save', async function(doc, next){

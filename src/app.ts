@@ -3,6 +3,8 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import blogRouter from './app/module/Blog Model/blog.Router';
 import authRouter from './app/module/User Model/authRouter';
+import globalErrorHandler from './app/middlewares/globalErrorHandling';
+import adminRouter from './app/module/admin/adminRouter';
 const app = express();
 
 
@@ -15,6 +17,7 @@ app.use(express.json());
 // api end points 
 app.use('/api/auth', authRouter)
 app.use('/api/blogs', blogRouter)
+app.use('/api/admin', adminRouter)
 
 
 
@@ -26,7 +29,7 @@ app.get('/', (req: Request, res: Response) => {
 })
 
 // global error handler 
-// app.use(globalErrorHandling)
+app.use(globalErrorHandler)
 
 app.use("*", (req: Request, res: Response) => {
   res.status(404).json({
