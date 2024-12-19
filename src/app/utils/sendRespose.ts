@@ -1,7 +1,7 @@
 import { Response } from "express"
 
 type sendResponseInterface <T> =  {
-    status?: boolean,
+    success?: boolean,
     statusCode: number,
     message: string,
     token?: string
@@ -10,7 +10,7 @@ type sendResponseInterface <T> =  {
 
 const sendResponse = <T>(res: Response, data: sendResponseInterface<T>) => {
     res.status(data.statusCode).json({
-        status: true,
+        success: true,
         statusCode: data.statusCode,
         message: data.message,
         token: data.token,

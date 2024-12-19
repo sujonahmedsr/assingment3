@@ -6,7 +6,7 @@ const createBlogIntoDb = async (payload: blogInterface) => {
     return result
 }
 const getAllBlogDb = async () => {
-    const result = await blogModel.find()
+    const result = await blogModel.find().populate('author')
     return result
 }
 const getSingleBlogDb = async (id: string) => {
