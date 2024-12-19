@@ -4,7 +4,8 @@ import { adminController } from "./adminController";
 
 const adminRouter = Router()
 
+adminRouter.patch('/users/:userId/block', authMid('admin'), adminController.userBlockedByAdmin)
 adminRouter.delete('/blogs/:id', authMid('admin'), adminController.deleteBlogAdmin)
-adminRouter.delete('/users/:userId/block', authMid('admin'), adminController.deleteBlogAdmin)
+
 
 export default adminRouter
