@@ -17,7 +17,7 @@ const createBlog = asyncFunc(async (req: Request, res: Response) => {
 
 // get all blogs 
 const getAllBlog = asyncFunc(async (req: Request, res: Response) => {
-    const result = await blogServices.getAllBlogDb()
+    const result = await blogServices.getAllBlogDb(req.query)
     sendResponse(res, {
         statusCode: StatusCodes.OK,
         message: 'Blogs fetched successfully',

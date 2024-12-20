@@ -3,13 +3,14 @@ import { userInterface } from "../User Model/user.Interface"
 import { userModel } from "../User Model/userSchema.model"
 
 const blockUserDb = async (id: string, payload: userInterface) => {
-    
     const user = await userModel.findOne({ _id: id })
 
+    // check if user still alive 😁
     if (!user) {
         throw new Error('User not found!')
     }
 
+    // check if user already block 
     let isBlocked = user?.isBlocked
     if (isBlocked) {
         throw new Error('This user already Blocked')

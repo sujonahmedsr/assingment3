@@ -13,7 +13,6 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
     message: 'Something went wrong!'
   }]
 
-  
   const NODE_DEV = process.env.NODE_DEV
 
   // Send the response
@@ -22,10 +21,7 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
     message,
     error,
     stack: NODE_DEV === 'development' ? err?.stack : null
-    // error: err,
   });
-
-  // No need to call `next()` here since the response is already sent.
 };
 
 export default globalErrorHandler;

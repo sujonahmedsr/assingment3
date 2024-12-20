@@ -10,7 +10,7 @@ const authMid = (...requiredRole: string[]) => {
 
         const token = authToken.split(" ")[1]
 
-        if (!token) {
+        if (token == 'undefined' || !token) {
             throw new Error("You are not authorized")
         }
 
