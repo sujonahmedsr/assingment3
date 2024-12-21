@@ -180,7 +180,7 @@ The server is deployed at: **https://blogproject-swart-beta.vercel.app/**
 ## Additional Resources
 
 - Admin Credentials:
-  - Email: `admin@example.com`
-  - Password: `adminpassword`
+  - Email: `sujon@gmail.com`
+  - Password: `securepassword`
 
 - Project Video Overview: https://drive.google.com/file/d/1uM3VNZ7ON0t6QhliOrGpm2KT2XG_GQc-/view
