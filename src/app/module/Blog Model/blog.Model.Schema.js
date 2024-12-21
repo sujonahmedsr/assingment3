@@ -1,8 +1,9 @@
-import { model, Schema } from "mongoose";
-import { blogInterface } from "./blog.Interface";
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.blogModel = void 0;
+const mongoose_1 = require("mongoose");
 // blog model schema 
-const blogSchemaModel = new Schema<blogInterface>({
+const blogSchemaModel = new mongoose_1.Schema({
     title: {
         type: String,
         required: [true, 'Title field is required.']
@@ -12,7 +13,7 @@ const blogSchemaModel = new Schema<blogInterface>({
         required: [true, 'Content field is required.']
     },
     author: {
-        type: Schema.Types.ObjectId,
+        type: mongoose_1.Schema.Types.ObjectId,
         ref: 'User'
     },
     isPublished: {
@@ -21,7 +22,6 @@ const blogSchemaModel = new Schema<blogInterface>({
     }
 }, {
     timestamps: true
-})
-
+});
 // blog model 
-export const blogModel = model<blogInterface>('Blogs', blogSchemaModel)
+exports.blogModel = (0, mongoose_1.model)('Blogs', blogSchemaModel);

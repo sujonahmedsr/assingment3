@@ -1,3 +1,5 @@
+import { StatusCodes } from "http-status-codes"
+import AppError from "../../errors/AppError"
 import { blogInterface } from "./blog.Interface"
 import { blogModel } from "./blog.Model.Schema"
 
@@ -22,10 +24,9 @@ const getAllBlogDb = async (query: any) => {
     // filter query
     const filterQuery = serachQuery.find(queryObj)
 
-
     // sortBy and sortOrder 
     let sortStr = 'createdAt'
-    if(query?.sortBy && query?.sortOrder){
+    if (query?.sortBy && query?.sortOrder) {
         const sortBy = query.sortBy
         const sortOrder = query.sortOrder
         sortStr = `${sortOrder === 'desc' ? '-' : ''}${sortBy}`
@@ -38,6 +39,9 @@ const getAllBlogDb = async (query: any) => {
 }
 const getSingleBlogDb = async (id: string) => {
     const result = await blogModel.findOne({ _id: id }).populate('author')
+    if (!result) {
+        throw new AppError(StatusCodes.NOT_FOUND, "Blog not found")
+    }
     return result
 }
 const updateSingleBlogDb = async (id: string, payload: blogInterface) => {

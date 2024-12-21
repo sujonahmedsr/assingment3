@@ -1,6 +1,8 @@
 import { model, Schema } from "mongoose";
 import { userInterface } from "./user.Interface";
 import bcrypt from 'bcrypt'
+import AppError from "../../errors/AppError";
+import { StatusCodes } from "http-status-codes";
 
 const userSchema = new Schema<userInterface>({
     name: {
@@ -40,7 +42,7 @@ userSchema.pre("save", async function(next){
     const {email} = this
     const user = await userModel.findOne({email})
     if(user){
-        throw new Error('User already exists')
+        throw new AppError(StatusCodes.BAD_REQUEST,'User already exists')
     }
 })
 

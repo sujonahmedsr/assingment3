@@ -2,36 +2,38 @@ import { NextFunction, Request, Response } from "express"
 import asyncFunc from "../../utils/asyncFunc"
 import jwt, { JwtPayload } from "jsonwebtoken"
 import { userModel } from "../User Model/userSchema.model"
+import AppError from "../../errors/AppError"
+import { StatusCodes } from "http-status-codes"
 
 const authMid = (...requiredRole: string[]) => {
     return asyncFunc(async (req: Request, res: Response, next: NextFunction) => {
 
-        const authToken = `Bearer ${req.headers.authorization}`
-
+        const authToken = req.headers.authorization as string
+    
         const token = authToken.split(" ")[1]
 
         if (token == 'undefined' || !token) {
-            throw new Error("You are not authorized")
+            throw new AppError(StatusCodes.UNAUTHORIZED,"You are not authorized")
         }
 
         const decoded = jwt.verify(token, process.env.SECRET_JWT as string) as JwtPayload
+        
+        const { email, role, id } = decoded
 
-        const { email, role } = decoded
-
-        const user = await userModel.findOne({ email })
+        const user = await userModel.findOne({ _id: id })
         
         if (!user) {
-            throw new Error("This user is not found !")
+            throw new AppError(StatusCodes.NOT_FOUND,"This user is not found !")
         }
 
         const userStatus = user?.isBlocked
 
         if (userStatus) {
-            throw new Error('This user is blocked ! !')
+            throw new AppError(StatusCodes.BAD_REQUEST,'This user is blocked ! !')
         }
 
         if (requiredRole && !requiredRole.includes(role)) {
-            throw new Error('You are not authorized');
+            throw new AppError(StatusCodes.UNAUTHORIZED,'You are not authorized');
         }
 
         req.user = decoded as JwtPayload;
