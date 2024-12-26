@@ -3,11 +3,11 @@ import AppError from "../../errors/AppError"
 import { blogInterface } from "./blog.Interface"
 import { blogModel } from "./blog.Model.Schema"
 
-const createBlogIntoDb = async (payload: blogInterface) => {
-    const result = await blogModel.create(payload)
+const createBlogIntoDb = async (payload: blogInterface): Promise<Record<string, any>> => {
+    const result = await (await blogModel.create(payload)).populate('author')
     return result
 }
-const getAllBlogDb = async (query: any) => {
+const getAllBlogDb = async (query: any): Promise<Record<string, any>> => {
     const queryObj = { ...query }
 
     const excludedItem = ["search", "filter", "sortBy", "sortOrder"]
@@ -34,7 +34,7 @@ const getAllBlogDb = async (query: any) => {
 
     const sortBy = filterQuery.sort(sortStr)
 
-    const result = await sortBy.find().populate('author')
+    const result = await sortBy.find().populate('author').select('_id title content author')
     return result
 }
 const getSingleBlogDb = async (id: string) => {
@@ -45,7 +45,7 @@ const getSingleBlogDb = async (id: string) => {
     return result
 }
 const updateSingleBlogDb = async (id: string, payload: blogInterface) => {
-    const result = await blogModel.findOneAndUpdate({ _id: id }, payload, { new: true })
+    const result = await blogModel.findOneAndUpdate({ _id: id }, payload, { new: true }).populate('author').select('_id title content author')
     return result
 }
 const deleteSingleBlogDb = async (id: string) => {

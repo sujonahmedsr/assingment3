@@ -6,11 +6,16 @@ import { StatusCodes } from "http-status-codes"
 
 const registerUser = asyncFunc(async (req: Request, res: Response) => {
     const body = req.body
+    
     const result = await userServices.resgisterUserIntoDb(body)
     sendResponse(res, {
         statusCode: StatusCodes.CREATED,
         message: 'User registered successfully',
-        data: result
+        data: {
+            _id: result?._id,
+            name: result?.name,
+            email: result?.email,
+        }
     })
 })
 

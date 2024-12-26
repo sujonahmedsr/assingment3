@@ -20,7 +20,12 @@ const createBlog = asyncFunc(async (req: Request, res: Response) => {
     sendResponse(res, {
         statusCode: StatusCodes.CREATED,
         message: 'Blog created successfully',
-        data: result
+        data: {
+            _id: result?._id,
+            title: result?.title,
+            content: result?.content,
+            author: result?.author
+        }
     })
 })
 
@@ -53,6 +58,9 @@ const updateSingleBlog = asyncFunc(async (req: Request, res: Response) => {
     const userId = req?.user?.id
     
     const blog = await blogModel.findOne({_id: id})
+
+    console.log(blog?.author, userId);
+    
 
     if(!blog){
         throw new AppError(StatusCodes.NOT_FOUND, 'Blog not found')
